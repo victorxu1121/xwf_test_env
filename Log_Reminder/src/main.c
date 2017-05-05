@@ -1,11 +1,12 @@
-#include "header_logreminder.h"
+#include "logreminder.h"
 #include <stdio.h>
 
 int main(int argc, char const *argv[])
 {
-    lr_file_path = FILE_PATH;
-    lr_file_type = FILE_TYPE;
-
+	printf("==========\nTest Start\n==========\n");
+    //lr_file_path = FILE_PATH;
+    //lr_file_type = FILE_TYPE;
+    //lr_debug_print = 0;
     lr_err = lr_init();
 	if (lr_err)
 	{
@@ -31,6 +32,8 @@ int main(int argc, char const *argv[])
 
 	lr_record_event("Test End");
 
+    
+	printf("==========\nTest End\n==========\n");
 	return 0;
 }
 

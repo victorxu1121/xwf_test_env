@@ -5,7 +5,7 @@
 
 #define FILE_PATH "LogFile/"
 #define FILE_TYPE "txt"
-
+ 
 ///===Variable===////
 
 time_t lr_timep;     /* time local */
@@ -21,7 +21,7 @@ char *lr_file_path;// = FILE_PATH;
 char *lr_file_type;// = FILE_TYPE;
 char lr_p_content[256];
 
-
+int lr_debug_print;
 int lr_err;
 
 ///===Function===///
