@@ -1,0 +1,14 @@
+Test 20170508 015115
+[              0.000129]Create the log file.
+[              0.000185]Test Start
+[              0.000200]Loop index 0
+[              0.011084]Loop index 1
+[              0.021917]Loop index 2
+[              0.033095]Loop index 3
+[              0.044008]Loop index 4
+[              0.055096]Loop index 5
+[              0.066194]Loop index 6
+[              0.077069]Loop index 7
+[              0.088209]Loop index 8
+[              0.099369]Loop index 9
+[              0.110350]Test End
