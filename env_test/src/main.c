@@ -26,6 +26,7 @@ void *thread2(void *);
 void *thread3(void *);
 void *thread_producer(void *);
 void *thread_consumer(void *);
+void *thread_consumer_2(void *);
 
 void lock_thread(const char *s);
 void unlock_thread(const char *s);
@@ -83,7 +84,10 @@ int main(int argc, char * argv[])
 	flag_full = 0;
 	flag_empty = 1;
 	production_cnt = 0;
-	int producer_id, consumer_id;
+	int producer_id_1 = 1; 
+	int producer_id_2 = 2; 
+   	int	consumer_id_1 = 1;
+	int	consumer_id_2 = 2;
 	
 	cl_cmd_menu_print();
 	while(1)
@@ -118,26 +122,31 @@ int main(int argc, char * argv[])
 					{printf("Thread1 create failed!!\n");}///%s: %d\n", __func__, strerror(err_t2));}
 				printf("Thread 2 created.\n");
 				*/
-				producer_id = 1;
-				err_t2 = pthread_create(&tid2, NULL, thread_producer, (void*)&producer_id);
+
+				err_t2 = pthread_create(&tid2, NULL, thread_producer, (void*)&producer_id_1);
 				if (err_t2 != 0)
-					{printf("Thread producer create failed!!\n");}///%s: %d\n", __func__, strerror(err_t1));}
+					{printf("Thread producer [%d] create failed!!\n", producer_id_1);}///%s: %d\n", __func__, strerror(err_t1));}
 				else 
-					{printf("Thread producer created.\n");}
+					{printf("Thread producer [%d] created.\n", producer_id_1);}
 
-				consumer_id = 1;
-				err_t3 = pthread_create(&tid3, NULL, thread_consumer, (void*)&consumer_id);
-				if (err_t3 != 0)
-					{printf("Thread consumer create failed!!\n");}///%s: %d\n", __func__, strerror(err_t1));}
+				err_t2 = pthread_create(&tid3, NULL, thread_producer, (void*)&producer_id_2);
+				if (err_t2 != 0)
+					{printf("Thread producer [%d] create failed!!\n", producer_id_2);}///%s: %d\n", __func__, strerror(err_t1));}
 				else 
-					{printf("Thread consumer created.\n");}
+					{printf("Thread producer [%d] created.\n", producer_id_2);}
 
-				consumer_id = 2;
-				err_t3 = pthread_create(&tid4, NULL, thread_consumer, (void*)&consumer_id);
+
+				err_t3 = pthread_create(&tid4, NULL, thread_consumer, (void*)&consumer_id_1);
 				if (err_t3 != 0)
-					{printf("Thread consumer create failed!!\n");}///%s: %d\n", __func__, strerror(err_t1));}
+					{printf("Thread consumer [%d]create failed!!\n", consumer_id_1);}///%s: %d\n", __func__, strerror(err_t1));}
 				else 
-					{printf("Thread consumer created.\n");}
+					{printf("Thread consumer [%d] created.\n", consumer_id_1);}
+
+				err_t3 = pthread_create(&tid5, NULL, thread_consumer, (void*)&consumer_id_2);
+				if (err_t3 != 0)
+					{printf("Thread consumer [%d] create failed!!\n", consumer_id_2);}///%s: %d\n", __func__, strerror(err_t1));}
+				else 
+					{printf("Thread consumer [%d] created.\n", consumer_id_2);}
 				break;
 			}
 		case 3: 
@@ -156,6 +165,10 @@ int main(int argc, char * argv[])
 				cl_printf("Quit!");
 				pthread_cond_signal(&cond_quit);
 				sleep(1);
+				pthread_cond_destroy(&cond);
+				pthread_cond_destroy(&cond_not_full);
+				pthread_cond_destroy(&cond_not_empty);
+				pthread_cond_destroy(&cond_quit);
 				return 0;
 			}
 		case 5:
@@ -180,8 +193,6 @@ int main(int argc, char * argv[])
 		}
 
 	}
-
-
 	
 	lr_record_event("Test Start");
 	printf("==========\nTest End\n==========\n");
@@ -312,12 +323,12 @@ void *thread_producer(void *arg)
 			{
 				flag_full = 0;
 				pthread_cond_signal(&cond_not_empty);
-				printf("Producer[%d]: Buffer is not Full!(NUM = %d flag_full = %d)\n",*producer_id_thread,production_cnt);
+				printf("Producer[%d]: Buffer is not Full!(NUM = %d)\n",*producer_id_thread,production_cnt);
 
 			}
 		}
 		unlock_thread("Thread producer");
-		sleep(1);
+		sleep(2);
 	}
 	return;
 }
@@ -359,8 +370,6 @@ void *thread_consumer(void *arg)
 	}
 	return;
 }
-
-
 
 
 
